@@ -38,15 +38,15 @@ const save = (key, data) => {
  */
 const init = async () => {
   await use(
-    'shop',
-    'notices',
-    'status',
+    // 'shop',
+    // 'notices',
+    // 'status',
     'categories',
-    'ownCoupons',
-    'pickCoupons',
-    'card',
-    'member',
-    'reduce'
+    // 'ownCoupons',
+    // 'pickCoupons',
+    // 'card',
+    // 'member',
+    // 'reduce'
   );
 };
 

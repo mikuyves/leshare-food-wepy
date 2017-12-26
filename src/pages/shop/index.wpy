@@ -71,13 +71,13 @@
   import Event from '../../utils/Event';
 
   @connect({
-    shop: store.get('shop'),
-    notices: store.get('notices'),
-    status: store.get('status'),
-    ownCoupons: store.get('ownCoupons'),
-    pickCoupons: store.get('pickCoupons'),
-    member: store.get('member'),
-    card: store.get('card'),
+//    shop: store.get('shop'),
+//    notices: store.get('notices'),
+//    status: store.get('status'),
+//    ownCoupons: store.get('ownCoupons'),
+//    pickCoupons: store.get('pickCoupons'),
+//    member: store.get('member'),
+//    card: store.get('card'),
     categories: store.get('categories')
   })
   export default class ShopIndex extends wepy.page {
@@ -95,25 +95,25 @@
     async onLoad ({goodsId, mode}, {preload}) {
       this.mode = mode;
       // 用户信息
-      await auth.user();
+//      await auth.user();
       // 初始化Store
       await store.init();
       // 加载商品分类
       this.categoryTab = {...this.categories};
       // 购物车
-      const carts = wepy.getStorageSync('carts');
-      this.carts = carts == '' ? [] : carts;
+//      const carts = wepy.getStorageSync('carts');
+//      this.carts = carts == '' ? [] : carts;
       // 加载商品列表
-      await this.loadGoodsList();
-      // 处理推荐跳转
-      if (goodsId) {
-        const detail = this.methods.detail.bind(this);
-        detail({id: goodsId});
-      }
-      // 处理购物车初始化
-      if (preload && preload.cart) {
-        await this.doResetCart(preload.cart)
-      }
+//      await this.loadGoodsList();
+//      // 处理推荐跳转
+//      if (goodsId) {
+//        const detail = this.methods.detail.bind(this);
+//        detail({id: goodsId});
+//      }
+//      // 处理购物车初始化
+//      if (preload && preload.cart) {
+//        await this.doResetCart(preload.cart)
+//      }
       // 监听事件
       Event.listen(Event.CART_LIST_CLEAR, this.doClearCart.bind(this), this);
       Event.listen(Event.CART_LIST_RESET, this.doResetCart.bind(this), this);
@@ -462,55 +462,55 @@
       this.carts.splice(index, 1);
     }
     computed = {
-      title() {
-        if (this.shop == null || this.shop.type == null) return;
-        const type = this.shop.type;
-        if (!this.status || !this.status.open) {
-          if (!this.init) {
-            Tips.modal(this.status.closeTips);
-          }
-          return this.status.closeTips;
-        }
-        // 标题处理
-        if (this.mode == 2) {
-          wepy.setNavigationBarTitle({ title: '堂食点餐' });
-          return '点堂食/外带';
-        } else {
-          wepy.setNavigationBarTitle({ title: type.name });
-          return type.name;
-        }
-      },
-      badgeText() {
-        if (this.shop == null || this.shop.type == null) return;
-        return this.mode == 2 ? '堂食' : this.shop.type.badgeText;
-      },
-      discount() {
-        if (this.member == null || this.card == null) {
-          return null;
-        }
-        if (this.card.supplyDiscount != 1) {
-          return null;
-        }
-        // 计算折扣
-        const {discountRule, customDiscount} = this.member;
-        let discount = 100;
-        if (customDiscount > 0 && customDiscount < 100) {
-          // 自定义折扣
-          discount = customDiscount;
-        } else if (discountRule != null && discountRule.discount < 100) {
-          // 等级折扣
-          discount = discountRule.discount;
-        }
-        if (discount == 100) {
-          return null;
-        }
-        const categories = discountRule.discountCategoryLists.map(item => item.categoryId);
-        return {
-          level: discountRule.levelName,
-          categories,
-          rate: discount
-        };
-      },
+//      title() {
+//        if (this.shop == null || this.shop.type == null) return;
+//        const type = this.shop.type;
+//        if (!this.status || !this.status.open) {
+//          if (!this.init) {
+//            Tips.modal(this.status.closeTips);
+//          }
+//          return this.status.closeTips;
+//        }
+//        // 标题处理
+//        if (this.mode == 2) {
+//          wepy.setNavigationBarTitle({ title: '堂食点餐' });
+//          return '点堂食/外带';
+//        } else {
+//          wepy.setNavigationBarTitle({ title: type.name });
+//          return type.name;
+//        }
+//      },
+//      badgeText() {
+//        if (this.shop == null || this.shop.type == null) return;
+//        return this.mode == 2 ? '堂食' : this.shop.type.badgeText;
+//      },
+//      discount() {
+//        if (this.member == null || this.card == null) {
+//          return null;
+//        }
+//        if (this.card.supplyDiscount != 1) {
+//          return null;
+//        }
+//        // 计算折扣
+//        const {discountRule, customDiscount} = this.member;
+//        let discount = 100;
+//        if (customDiscount > 0 && customDiscount < 100) {
+//          // 自定义折扣
+//          discount = customDiscount;
+//        } else if (discountRule != null && discountRule.discount < 100) {
+//          // 等级折扣
+//          discount = discountRule.discount;
+//        }
+//        if (discount == 100) {
+//          return null;
+//        }
+//        const categories = discountRule.discountCategoryLists.map(item => item.categoryId);
+//        return {
+//          level: discountRule.levelName,
+//          categories,
+//          rate: discount
+//        };
+//      },
       selectedCategoryName() {
         if (this.init && this.categories && this.categories.list) {
           const selectedId = this.categories.selectedId;
