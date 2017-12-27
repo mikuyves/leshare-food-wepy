@@ -240,11 +240,11 @@ export default class goods extends base {
     const images = item.images;
     // 图片处理
     if (images == null || images.length < 1) {
-      item.imageUrl = '/images/goods/broken.png';
+      item.imageUrl = '/images/icons/empty.png';
     } else if (images[0].url == null) {
-      item.imageUrl = '/images/goods/broken.png';
+      item.imageUrl = '/images/icons/empty.png';
     } else {
-      item.imageUrl = images[0].url + '/medium';
+      item.imageUrl = images[0].url + '?imageView/2/w/100/h/100/q/100/format/png';
     }
   }
 }
