@@ -275,9 +275,10 @@
           // 购物车中不存在
           let goodsPrice, originalPrice;
           if (goodsSku) {
-            const skuInfo = goods.goodsSkuInfo.goodsSkuDetails.find(item => item.sku == goodsSku);
-            goodsPrice = skuInfo.goodsSkuDetailBase.price;
-            originalPrice = skuInfo.goodsSkuDetailBase.originalPrice;
+            const skuInfo = goods.goodsSkuInfo.find(item => item.id == goodsSku.id);
+            // TODO: 价格折扣需要改善。
+            goodsPrice = skuInfo.price1;
+            originalPrice = skuInfo.price4;
           } else if (goods) {
             goodsPrice = goods.sellPrice;
             originalPrice = goods.originalPrice;
@@ -288,6 +289,7 @@
           this.carts.push({
             goodsId: goodsId,
             goodsSku: goodsSku,
+            goodsSkuName: goodsSku.name,
             goodsName: goods.name,
             innerCid: goods.innerCid,
             goodsImage: goods.imageUrl,
