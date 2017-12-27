@@ -14,6 +14,7 @@ export default class http {
     }
     const res = await wepy.request(param);
     if (this.isSuccess(res)) {
+      console.log(res.data.data)
       return res.data.data;
     } else {
       throw this.requestException(res);

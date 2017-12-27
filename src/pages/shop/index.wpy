@@ -71,10 +71,10 @@
   import Event from '../../utils/Event';
 
   @connect({
-//    shop: store.get('shop'),
+    shop: store.get('shop'),
 //    notices: store.get('notices'),
-//    status: store.get('status'),
-//    ownCoupons: store.get('ownCoupons'),
+    status: store.get('status'),
+    ownCoupons: store.get('ownCoupons'),
 //    pickCoupons: store.get('pickCoupons'),
 //    member: store.get('member'),
 //    card: store.get('card'),
@@ -93,7 +93,7 @@
       mode: 1
     };
     async onLoad ({goodsId, mode}, {preload}) {
-      this.mode = mode;
+      this.mode = 1;
       // 用户信息
 //      await auth.user();
       // 初始化Store
