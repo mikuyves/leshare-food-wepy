@@ -104,7 +104,9 @@
               stock.max = cart.goodsNum >= stock.stock;
             }
           });
-          return stocks;
+          // TODO: bugs!
+//          return stocks;
+          return skuData
         }
       }
     };

@@ -106,10 +106,10 @@
       // 加载商品列表
 //      await this.loadGoodsList();
 //      // 处理推荐跳转
-//      if (goodsId) {
-//        const detail = this.methods.detail.bind(this);
-//        detail({id: goodsId});
-//      }
+      if (goodsId) {
+        const detail = this.methods.detail.bind(this);
+        detail({id: goodsId});
+      }
 //      // 处理购物车初始化
 //      if (preload && preload.cart) {
 //        await this.doResetCart(preload.cart)
@@ -121,14 +121,14 @@
       this.loaded();
     };
     // TODO 店铺状态判断需要重构
-    // async onShow () {
-    //   if (this.init) {
-    //     // 重新判断店铺状态
-    //     Tips.setLoading();
-    //     await this.setShopTitle();
-    //     this.loaded();
-    //   }
-    // }
+    async onShow () {
+      if (this.init) {
+        // 重新判断店铺状态
+        Tips.setLoading();
+        await this.setShopTitle();
+        this.loaded();
+      }
+    }
     /**
      * 页面分享
      */
@@ -427,6 +427,7 @@
      */
     async skuSelector(goodsId) {
       this.skuGoods = this.findGoods(goodsId);
+      console.log('I am in skuSelector: ', this.skuGoods)
       this.skuDisplay = 'true';
       this.loaded();
     }
@@ -443,7 +444,10 @@
      * 寻找购物车商品
      */
     findGoods(goodsId) {
-      return this.page.list.find(item => item.id == goodsId);
+      console.log('I am in findGoods: ', goodsId)
+      let res = this.page.list.find(item => item.id == goodsId);
+      console.log(res)
+      return res
     }
     findCart(goodsId, goodsSku) {
       return this.carts.find(item => item.goodsId == goodsId && (goodsSku == null || item.goodsSku == goodsSku));
@@ -462,55 +466,55 @@
       this.carts.splice(index, 1);
     }
     computed = {
-//      title() {
-//        if (this.shop == null || this.shop.type == null) return;
-//        const type = this.shop.type;
-//        if (!this.status || !this.status.open) {
-//          if (!this.init) {
-//            Tips.modal(this.status.closeTips);
-//          }
-//          return this.status.closeTips;
-//        }
-//        // 标题处理
-//        if (this.mode == 2) {
-//          wepy.setNavigationBarTitle({ title: '堂食点餐' });
-//          return '点堂食/外带';
-//        } else {
-//          wepy.setNavigationBarTitle({ title: type.name });
-//          return type.name;
-//        }
-//      },
-//      badgeText() {
-//        if (this.shop == null || this.shop.type == null) return;
-//        return this.mode == 2 ? '堂食' : this.shop.type.badgeText;
-//      },
-//      discount() {
-//        if (this.member == null || this.card == null) {
-//          return null;
-//        }
-//        if (this.card.supplyDiscount != 1) {
-//          return null;
-//        }
-//        // 计算折扣
-//        const {discountRule, customDiscount} = this.member;
-//        let discount = 100;
-//        if (customDiscount > 0 && customDiscount < 100) {
-//          // 自定义折扣
-//          discount = customDiscount;
-//        } else if (discountRule != null && discountRule.discount < 100) {
-//          // 等级折扣
-//          discount = discountRule.discount;
-//        }
-//        if (discount == 100) {
-//          return null;
-//        }
-//        const categories = discountRule.discountCategoryLists.map(item => item.categoryId);
-//        return {
-//          level: discountRule.levelName,
-//          categories,
-//          rate: discount
-//        };
-//      },
+      title() {
+        if (this.shop == null || this.shop.type == null) return;
+        const type = this.shop.type;
+        if (!this.status || !this.status.open) {
+          if (!this.init) {
+            Tips.modal(this.status.closeTips);
+          }
+          return this.status.closeTips;
+        }
+        // 标题处理
+        if (this.mode == 2) {
+          wepy.setNavigationBarTitle({ title: '堂食点餐' });
+          return '点堂食/外带';
+        } else {
+          wepy.setNavigationBarTitle({ title: type.name });
+          return type.name;
+        }
+      },
+      badgeText() {
+        if (this.shop == null || this.shop.type == null) return;
+        return this.mode == 2 ? '堂食' : this.shop.type.badgeText;
+      },
+      discount() {
+        if (this.member == null || this.card == null) {
+          return null;
+        }
+        if (this.card.supplyDiscount != 1) {
+          return null;
+        }
+        // 计算折扣
+        const {discountRule, customDiscount} = this.member;
+        let discount = 100;
+        if (customDiscount > 0 && customDiscount < 100) {
+          // 自定义折扣
+          discount = customDiscount;
+        } else if (discountRule != null && discountRule.discount < 100) {
+          // 等级折扣
+          discount = discountRule.discount;
+        }
+        if (discount == 100) {
+          return null;
+        }
+        const categories = discountRule.discountCategoryLists.map(item => item.categoryId);
+        return {
+          level: discountRule.levelName,
+          categories,
+          rate: discount
+        };
+      },
       selectedCategoryName() {
         if (this.init && this.categories && this.categories.list) {
           const selectedId = this.categories.selectedId;
