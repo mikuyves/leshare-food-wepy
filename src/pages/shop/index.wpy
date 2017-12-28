@@ -101,10 +101,10 @@
       // 加载商品分类
       this.categoryTab = {...this.categories};
       // 购物车
-//      const carts = wepy.getStorageSync('carts');
-//      this.carts = carts == '' ? [] : carts;
+      const carts = wepy.getStorageSync('carts');
+      this.carts = carts === '' ? [] : carts;
       // 加载商品列表
-//      await this.loadGoodsList();
+      await this.loadGoodsList();
 //      // 处理推荐跳转
       if (goodsId) {
         const detail = this.methods.detail.bind(this);

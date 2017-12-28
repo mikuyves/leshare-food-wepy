@@ -10,11 +10,12 @@ export default class goods extends base {
    */
   static page (isRecommend = false, discount) {
     let url = `${this.baseUrl}/goods`;
-    if (isRecommend) {
-      url += '/recommend';
-    }
+    // if (isRecommend) {
+    //   url += '/recommend';
+    // }
     return new Page(url, item => {
       this._processGoodsDiscount(item, discount);
+      console.log('In processGoodData: ', item)
       this._processGoodsData(item);
     });
   }
@@ -225,7 +226,7 @@ export default class goods extends base {
     }
 
     // 处理图片
-    this._processGoodsPreview(item);
+    // this._processGoodsPreview(item);
     // this._processSkuLable(item);
     this._processGoodsPriceRange(item);
     this._processGoodsPriceLabel(item);
@@ -243,6 +244,7 @@ export default class goods extends base {
    * 处理预览图
    */
   static _processGoodsPreview (item) {
+    console.log('In GoodPreview: ', item)
     const images = item.images;
     // 图片处理
     if (images == null || images.length < 1) {
