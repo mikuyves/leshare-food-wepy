@@ -250,7 +250,7 @@
        * 选择预约时间
        */
       async arriveTime() {
-        const {text} = await Tips.action('立即出餐', '15分钟内到店', '30分钟内到店', '1小时内到店');
+        const {text} = await Tips.action('立即出货', '今天到店', '明天到店', '后天到店');
         this.trade.arriveTime = text;
         this.$apply();
       },

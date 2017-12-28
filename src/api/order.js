@@ -252,7 +252,7 @@ export default class order extends base {
       shopName: this.shopName
     };
     if (param.orderType == '30') {
-      trade.arriveTime = '立即出餐';
+      trade.arriveTime = '立即取货';
     }
     return trade;
   }

@@ -7,7 +7,7 @@
     <view class="tab-vr"></view>
     <view class="tab-item row-center" @tap="tap(33)">
       <image class="icon" src="/images/icons/package{{selectedId == '33' ? '' : '-gray'}}.png"/>
-      <text class="{{selectedId == '33' ? 'text-selected' : ''}}">回头再来</text>
+      <text class="{{selectedId == '33' ? 'text-selected' : ''}}">快递送货</text>
     </view>
   </view>
 </template>
