@@ -39,10 +39,8 @@
 <script>
   import wepy from 'wepy';
   import CoverPanel from '../common/cover_panel';
-  import Sku from '../../utils/Sku';
   import Tips from '../../utils/Tips';
   import DisplayBadge from './discount_badge';
-  let skuData;
   export default class SkuSelector extends wepy.component {
     props = {
       goods: {},
@@ -67,8 +65,6 @@
 //        skuData.select('规格', skuValue);
         this.selected = skuValue;
         console.log(skuValue)
-//        this.price = skuData.detail.price;
-//        this.originalPrice = skuData.detail.originalPrice;
         this.price = this.goods.sellPrice;
         this.originalPrice = this.goods.originalPrice;
         this.$apply();
@@ -89,27 +85,7 @@
         this.display = 'false';
       }
     };
-    computed = {
-//      sku() {
-//        if (this.goods && this.goods.id) {
-//          skuData = new Sku(this.goods);
-//          const stocks = skuData.skuStocks;
-//          stocks.forEach(stock => {
-//            if (stock.stock == 0) {
-//              stock.max = true;
-//              return;
-//            }
-//            const cart = this.carts.find(item => item.goodsId == this.goods.id && item.goodsSku == stock.sku);
-//            if (cart == null) {
-//              stock.max = false;
-//            } else {
-//              stock.max = cart.goodsNum >= stock.stock;
-//            }
-//          });
-//          return stocks;
-//        }
-//      }
-    };
+    computed = {};
     components = {
       DisplayBadge: DisplayBadge,
       CoverPanel: CoverPanel
