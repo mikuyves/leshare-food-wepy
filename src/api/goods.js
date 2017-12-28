@@ -73,10 +73,10 @@ export default class goods extends base {
    */
   static _processGoodsDetail (detail) {
     // 解析预览图
-    this._processGoodsPreview(detail);
+    // this._processGoodsPreview(detail);
 
     // 解析SKU规格
-    this._processSkuLable(detail);
+    // this._processSkuLable(detail);
 
     // 处理价格范围区间
     this._processGoodsPriceRange(detail);

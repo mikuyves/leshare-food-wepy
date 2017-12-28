@@ -20,7 +20,7 @@
       <swiper class="goods-swiper" indicator-dots="true" autoplay="true" interval="5000" @tap="previewDetailSwiper">
         <block wx:for="{{detail.images}}" wx:key="id">
           <swiper-item>
-            <image src="{{item.url}}/preview" mode="aspectFill"></image>
+            <image src="{{item.url}}" mode="aspectFit"></image>
           </swiper-item>
         </block>
       </swiper>
@@ -33,11 +33,16 @@
           <view class="small label primary" wx:if="{{detail.isRecommend == 1}}">推荐</view>
           <text class="name">{{detail.name}}</text>
         </view>
-        <text class="sm muted mt10">已售{{detail.salesVolume}}件</text>
+        <text class="sm muted mt10">{{detail.pid}}</text>
 
         <!--价格区域-->
         <view class="price row-between mt10">
-          <text class="major xxl">￥{{detail.priceLable}}</text>
+          <!--<text class="major xxl">￥{{detail.priceLable}}</text>-->
+          <view class="price-box">
+            <view class="goods-unit">￥</view>
+            <text class="goods-price">{{detail.priceLable}}</text>
+            <text class="original-price" wx:if="{{detail.discount}}">￥{{detail.originalPrice}}</text>
+          </view>
           <!--数量选择器-->
           <view class="quantity row mr20">
             <view class="quantity-cart-btn" @tap.stop="buy({{detail}})" >
@@ -105,7 +110,7 @@
     async onLoad ({goodsId}) {
       this.goodsId = goodsId;
       this.detail = await goods.getInfo(goodsId);
-      this.count = await comment.count(goodsId);
+//      this.count = await comment.count(goodsId);
       this.page = comment.page();
       this.tab = {
         list: [
@@ -258,6 +263,50 @@
       }
       text{
         padding: 20rpx;
+      }
+    }
+  }
+  .price-box{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    .goods-unit{
+      color: $color-major;
+      font-size: $text-sm;
+    }
+    .goods-price{
+      color: $color-major;
+      font-size: $text-xl;
+    }
+    .original-price{
+      color: $color-muted;
+      font-size: $text-xs;
+      text-decoration: line-through;
+    }
+  }
+
+  .discount-box{
+    border: 1px solid $color-major;
+    height: 15px;
+    margin-left: 7px;
+    text {
+      font-size: $text-xxs;
+    }
+    view{
+      display: flex;
+      align-items: center;
+      height: 15px;
+      padding: 0 3px;
+    }
+    .discount-rate{
+      background-color: $color-major;
+      text{
+        color: #FFF;
+      }
+    }
+    .discount-text {
+      text{
+        color: $color-major;
       }
     }
   }

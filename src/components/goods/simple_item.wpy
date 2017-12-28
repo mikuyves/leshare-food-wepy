@@ -9,7 +9,7 @@
         </view>
         <view class="row">
           <view>
-            <text class="xs muted">已售{{goods.salesVolume}}件</text>
+            <text class="xxs muted">{{goods.pid}}</text>
           </view>
           <!--折扣信息-->
           <view class="discount-box row" wx:if="{{goods.discount}}">
