@@ -480,8 +480,8 @@
         }
         // 标题处理
         if (this.mode == 2) {
-          wepy.setNavigationBarTitle({ title: '堂食点餐' });
-          return '点堂食/外带';
+          wepy.setNavigationBarTitle({ title: '模式二' });
+          return '模式二/未完善';
         } else {
           wepy.setNavigationBarTitle({ title: type.name });
           return type.name;
@@ -489,7 +489,7 @@
       },
       badgeText() {
         if (this.shop == null || this.shop.type == null) return;
-        return this.mode == 2 ? '堂食' : this.shop.type.badgeText;
+        return this.mode == 2 ? 'MODE-2' : this.shop.type.badgeText;
       },
       discount() {
         if (this.member == null || this.card == null) {
