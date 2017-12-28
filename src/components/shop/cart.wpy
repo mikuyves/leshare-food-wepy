@@ -37,7 +37,7 @@
         <block wx:for="{{carts}}" wx:key="index">
           <view class="cart-item row-between">
 
-            // TODO: 改善购物车排版。
+            <!--// TODO: 改善购物车排版。-->
             <view class="cart-title column">
               <image class="thumbnail" mode="aspectFit" src="{{item.goodsImage}}"></image>
             </view>
