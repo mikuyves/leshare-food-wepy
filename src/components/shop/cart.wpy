@@ -36,10 +36,16 @@
       <view class="cart-list">
         <block wx:for="{{carts}}" wx:key="index">
           <view class="cart-item row-between">
-            <!--商品名称-->
+
+            // TODO: 改善购物车排版。
             <view class="cart-title column">
-              <text class="lg inline">{{item.goodsName}}</text>
-              <text class="xs muted" wx:if="{{item.goodsSku}}">{{item.goodsSku.name}}</text>
+              <image class="thumbnail" mode="aspectFit" src="{{item.goodsImage}}"></image>
+            </view>
+
+            <!--商品名称-->
+            <view class="column">
+                <text class="lg inline">{{item.goodsName}}</text>
+                <text class="xs muted" wx:if="{{item.goodsSku}}">{{item.goodsSku.name}}</text>
             </view>
 
             <!--右侧-->
@@ -311,5 +317,10 @@
     border-bottom: $border;
     padding-left: 20rpx;
     padding-right: 30rpx;
+  }
+
+  .thumbnail{
+    width: 80rpx;
+    height: 80rpx;
   }
 </style>
