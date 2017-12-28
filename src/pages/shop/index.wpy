@@ -72,12 +72,12 @@
 
   @connect({
     shop: store.get('shop'),
-    notices: store.get('notices'),
+//    notices: store.get('notices'),
     status: store.get('status'),
     ownCoupons: store.get('ownCoupons'),
-    pickCoupons: store.get('pickCoupons'),
-    member: store.get('member'),
-    card: store.get('card'),
+//    pickCoupons: store.get('pickCoupons'),
+//    member: store.get('member'),
+//    card: store.get('card'),
     categories: store.get('categories')
   })
   export default class ShopIndex extends wepy.page {
@@ -93,27 +93,27 @@
       mode: 1
     };
     async onLoad ({goodsId, mode}, {preload}) {
-      this.mode = mode;
+      this.mode = 1;
       // 用户信息
-      await auth.user();
+//      await auth.user();
       // 初始化Store
       await store.init();
       // 加载商品分类
       this.categoryTab = {...this.categories};
       // 购物车
-      const carts = wepy.getStorageSync('carts');
-      this.carts = carts == '' ? [] : carts;
+//      const carts = wepy.getStorageSync('carts');
+//      this.carts = carts == '' ? [] : carts;
       // 加载商品列表
-      await this.loadGoodsList();
-      // 处理推荐跳转
+//      await this.loadGoodsList();
+//      // 处理推荐跳转
       if (goodsId) {
         const detail = this.methods.detail.bind(this);
         detail({id: goodsId});
       }
-      // 处理购物车初始化
-      if (preload && preload.cart) {
-        await this.doResetCart(preload.cart)
-      }
+//      // 处理购物车初始化
+//      if (preload && preload.cart) {
+//        await this.doResetCart(preload.cart)
+//      }
       // 监听事件
       Event.listen(Event.CART_LIST_CLEAR, this.doClearCart.bind(this), this);
       Event.listen(Event.CART_LIST_RESET, this.doResetCart.bind(this), this);
@@ -121,14 +121,14 @@
       this.loaded();
     };
     // TODO 店铺状态判断需要重构
-    // async onShow () {
-    //   if (this.init) {
-    //     // 重新判断店铺状态
-    //     Tips.setLoading();
-    //     await this.setShopTitle();
-    //     this.loaded();
-    //   }
-    // }
+    async onShow () {
+      if (this.init) {
+        // 重新判断店铺状态
+        Tips.setLoading();
+        await this.setShopTitle();
+        this.loaded();
+      }
+    }
     /**
      * 页面分享
      */
@@ -275,9 +275,10 @@
           // 购物车中不存在
           let goodsPrice, originalPrice;
           if (goodsSku) {
-            const skuInfo = goods.goodsSkuInfo.goodsSkuDetails.find(item => item.sku == goodsSku);
-            goodsPrice = skuInfo.goodsSkuDetailBase.price;
-            originalPrice = skuInfo.goodsSkuDetailBase.originalPrice;
+            const skuInfo = goods.goodsSkuInfo.find(item => item.id == goodsSku.id);
+            // TODO: 价格折扣需要改善。
+            goodsPrice = skuInfo.price1;
+            originalPrice = skuInfo.price4;
           } else if (goods) {
             goodsPrice = goods.sellPrice;
             originalPrice = goods.originalPrice;
@@ -288,6 +289,7 @@
           this.carts.push({
             goodsId: goodsId,
             goodsSku: goodsSku,
+            goodsSkuName: goodsSku.name,
             goodsName: goods.name,
             innerCid: goods.innerCid,
             goodsImage: goods.imageUrl,
@@ -427,6 +429,7 @@
      */
     async skuSelector(goodsId) {
       this.skuGoods = this.findGoods(goodsId);
+      console.log('I am in skuSelector: ', this.skuGoods)
       this.skuDisplay = 'true';
       this.loaded();
     }
@@ -443,7 +446,10 @@
      * 寻找购物车商品
      */
     findGoods(goodsId) {
-      return this.page.list.find(item => item.id == goodsId);
+      console.log('I am in findGoods: ', goodsId)
+      let res = this.page.list.find(item => item.id == goodsId);
+      console.log(res)
+      return res
     }
     findCart(goodsId, goodsSku) {
       return this.carts.find(item => item.goodsId == goodsId && (goodsSku == null || item.goodsSku == goodsSku));

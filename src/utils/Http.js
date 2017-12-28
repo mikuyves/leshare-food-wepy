@@ -14,6 +14,7 @@ export default class http {
     }
     const res = await wepy.request(param);
     if (this.isSuccess(res)) {
+      console.log(res.data.data)
       return res.data.data;
     } else {
       throw this.requestException(res);
@@ -29,8 +30,11 @@ export default class http {
     if (wxCode !== 200) {
       return false;
     }
-    const wxData = res.data;
-    return !(wxData && wxData.code !== 0);
+    // const wxData = res.data;
+    // return !(wxData && wxData.code !== 0);
+    else {
+      return true
+    }
   }
 
   /**

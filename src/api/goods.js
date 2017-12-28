@@ -174,17 +174,23 @@ export default class goods extends base {
    * 处理SKU标签
    */
   static _processSkuLable (detail) {
-    const skuInfo = detail.goodsSkuInfo;
+    // const skuInfo = detail.goodsSkuInfo;
+    const skuInfo = detail.labels;
+    console.log(skuInfo)
     if (!skuInfo) {
       return;
     }
 
     const skuLabels = [];
     for (let i = 1; i <= 3; i++) {
-      const skuKey = skuInfo[`prop${i}`];
-      const skuValueStr = skuInfo[`value${i}`];
+      // const skuKey = skuInfo[`prop${i}`];
+      // const skuValueStr = skuInfo[`value${i}`];
+      const skuKey = skuInfo.id;
+      const skuValueStr = skuInfo.name;
+      console.log(skuKey)
+      console.log(skuValueStr)
       if (skuKey && skuValueStr) {
-        const skuValues = skuValueStr.split(',');
+        const skuValues = skuValueStr.split('-');
         const sku = {
           key: skuKey,
           value: skuValues
@@ -220,7 +226,7 @@ export default class goods extends base {
 
     // 处理图片
     this._processGoodsPreview(item);
-    this._processSkuLable(item);
+    // this._processSkuLable(item);
     this._processGoodsPriceRange(item);
     this._processGoodsPriceLabel(item);
     this._processGoodsQuantity(item);
@@ -240,11 +246,11 @@ export default class goods extends base {
     const images = item.images;
     // 图片处理
     if (images == null || images.length < 1) {
-      item.imageUrl = '/images/goods/broken.png';
+      item.imageUrl = '/images/icons/empty.png';
     } else if (images[0].url == null) {
-      item.imageUrl = '/images/goods/broken.png';
+      item.imageUrl = '/images/icons/empty.png';
     } else {
-      item.imageUrl = images[0].url + '/medium';
+      item.imageUrl = images[0].url + '?imageView/2/w/100/h/100/q/100/format/png';
     }
   }
 }

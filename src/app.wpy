@@ -20,33 +20,33 @@ export default class extends wepy.app {
     // 注册中间件
     this.use('requestfix');
     this.use('promisify');
-    this.intercept('request', {
-      config (p) {
-        p.header = this.createAuthHeader();
-        return p;
-      }
-    });
-    this.intercept('uploadFile', {
-      config (p) {
-        p.header = this.createAuthHeader();
-        return p;
-      },
-      success (p) {
-        return p.data;
-      }
-    });
+//    this.intercept('request', {
+//      config (p) {
+//        p.header = this.createAuthHeader();
+//        return p;
+//      }
+//    });
+//    this.intercept('uploadFile', {
+//      config (p) {
+//        p.header = this.createAuthHeader();
+//        return p;
+//      },
+//      success (p) {
+//        return p.data;
+//      }
+//    });
   }
   /**
    * 构造权限头部
    */
-  createAuthHeader () {
-    const loginCode = wepy.$instance.globalData.auth.login_code;
-    const header = {};
-    if (loginCode) {
-      header['login_code'] = loginCode;
-    }
-    return header;
-  }
+//  createAuthHeader () {
+//    const loginCode = wepy.$instance.globalData.auth.login_code;
+//    const header = {};
+//    if (loginCode) {
+//      header['login_code'] = loginCode;
+//    }
+//    return header;
+//  }
   onLaunch(param) {
     // 校验SDK
     WxUtils.checkSDK();
@@ -78,9 +78,9 @@ export default class extends wepy.app {
   }
   config = {
     pages: [
+      'pages/shop/index',
       'pages/home/home',
       'pages/home/login',
-      'pages/shop/index',
       'pages/goods/detail',
       'pages/goods/comment_list',
       'pages/goods/comment_edit',
@@ -118,7 +118,9 @@ export default class extends wepy.app {
     version: 'v2.0.0',
     // baseUrl: 'https://api.leshare.shop/v2/customer'
     // baseUrl: 'http://192.168.31.124:9999/v2/customer',
-    baseUrl: 'http://106.14.195.68:9999/v2/customer'
+//    baseUrl: 'http://106.14.195.68:9999/v2/customer',
+//    baseUrl: 'http://localhost:3000/api/v1.0'
+    baseUrl: 'http://localhost:3000/api/v1.1'
   }
 }
 </script>

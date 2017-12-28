@@ -39,14 +39,14 @@ const save = (key, data) => {
 const init = async () => {
   await use(
     'shop',
-    'notices',
+    // 'notices',
     'status',
     'categories',
     'ownCoupons',
-    'pickCoupons',
-    'card',
-    'member',
-    'reduce'
+    // 'pickCoupons',
+    // 'card',
+    // 'member',
+    // 'reduce'
   );
 };
 

@@ -39,7 +39,7 @@
             <!--商品名称-->
             <view class="cart-title column">
               <text class="lg inline">{{item.goodsName}}</text>
-              <text class="xs muted" wx:if="{{item.goodsSku}}">{{item.goodsSku}}</text>
+              <text class="xs muted" wx:if="{{item.goodsSku}}">{{item.goodsSku.name}}</text>
             </view>
 
             <!--右侧-->

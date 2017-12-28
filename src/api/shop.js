@@ -5,8 +5,8 @@ import wepy from 'wepy';
 export default class shop extends base {
   static TYPE = {
     '1': {
-      name: '在线商城',
-      badgeText: '商城'
+      name: '花叶间',
+      badgeText: '广州'
     },
     '2': {
       name: '点外卖',
