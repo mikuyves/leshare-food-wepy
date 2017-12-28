@@ -452,7 +452,7 @@
       return res
     }
     findCart(goodsId, goodsSku) {
-      return this.carts.find(item => item.goodsId == goodsId && (goodsSku == null || item.goodsSku == goodsSku));
+      return this.carts.find(item => item.goodsId == goodsId && (goodsSku == null || item.goodsSku.id == goodsSku.id));
     }
     countCart(goodsId) {
       let count = 0;
