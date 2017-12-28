@@ -173,8 +173,8 @@
 
     async onLoad (params, {preload}) {
       const isOpen = await this.checkShopStatus();
-      const result = await auth.user({block: true, redirect: true});
-      if (!result || !isOpen) { return; }
+//      const result = await auth.user({block: true, redirect: true});
+//      if (!result || !isOpen) { return; }
       // 订单数据
       this.trade = preload.trade;
       this.goodsList = this.trade.orderGoodsInfos;
@@ -185,7 +185,7 @@
         await this.updateDelivery();
       }
       // 可用卡券
-      this.coupons = await coupon.available(this.trade.orderGoodsInfos);
+//      this.coupons = await coupon.available(this.trade.orderGoodsInfos);
       // 自动选择优惠券
       this.setDefaultCoupon();
       this.loaded();
