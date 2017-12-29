@@ -104,8 +104,8 @@
     };
     async onLoad() {
       // 校验是否登录成功
-      const result = await auth.user({block: true, redirect: true});
-      if (!result) return;
+//      const result = await auth.user({block: true, redirect: true});
+//      if (!result) return;
       await store.init();
       this.page = order.page();
       // 分页加载
