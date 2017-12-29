@@ -90,7 +90,8 @@
       skuDisplay: 'false',
       detailDisplay: false,
       skuGoods: {},
-      mode: 1
+      mode: 1,
+      scanPid: 0
     };
     async onLoad ({goodsId, mode}, {preload}) {
       this.mode = 1;
@@ -147,7 +148,7 @@
      * 分页参数
      */
     params() {
-      return {category_id: this.categories.selectedId};
+      return {category_id: this.categories.selectedId, 'scan_pid': this.scanPid};
     }
     /**
      * 加载商品列表
@@ -211,10 +212,16 @@
       return num;
     }
     methods = {
-      switchTab() {
+      async switchTab() {
         const selectedId = this.categories.selectedId;
+        if (selectedId === '-2') {
+          let {result} = await wepy.scanCode({'scanType': ['barCode']});
+          console.log(result)
+          this.scanPid = result;
+          this.$apply();
+        }
         // 先判断缓存中是否存在商品列表
-        if (this.pages[selectedId] && this.pages[selectedId].list.length > 0) {
+        if (this.pages[selectedId] && this.pages[selectedId].list.length > 0 && selectedId != -2) {
           this.page = this.pages[selectedId];
           this.setGoodsNum();
           this.loaded();

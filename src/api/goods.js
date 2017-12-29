@@ -10,9 +10,6 @@ export default class goods extends base {
    */
   static page (isRecommend = false, discount) {
     let url = `${this.baseUrl}/goods`;
-    // if (isRecommend) {
-    //   url += '/recommend';
-    // }
     return new Page(url, item => {
       this._processGoodsDiscount(item, discount);
       console.log('In processGoodData: ', item)
@@ -48,6 +45,10 @@ export default class goods extends base {
 
   static _createGoodsCategories (data) {
     const list = [];
+    list.push({
+      id: '-2',
+      title: '扫码'
+    });
     list.push({
       id: '-1',
       title: '推荐'
