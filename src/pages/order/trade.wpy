@@ -301,17 +301,18 @@
           return;
         }
         // 检查是否为离线订单
-        if (trade.paymentType == order.PAYMENT_OFFLINE) {
-          Tips.success('下单成功');
-        } else {
-          // 发起支付
-          const isPay = await this.requestWxPayment(trade);
-          if (isPay) {
-            Tips.success('支付成功');
-          } else {
-            Tips.alert('支付取消');
-          }
-        }
+//        if (trade.paymentType == order.PAYMENT_OFFLINE) {
+//          Tips.success('下单成功');
+//        } else {
+//          // 发起支付
+//          const isPay = await this.requestWxPayment(trade);
+//          if (isPay) {
+//            Tips.success('支付成功');
+//          } else {
+//            Tips.alert('支付取消');
+//          }
+//        }
+        Tips.success('下单成功');
         // 清空购物车
         Event.emit(Event.CART_LIST_CLEAR);
         // 卡券领取更新

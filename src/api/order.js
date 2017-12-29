@@ -55,7 +55,9 @@ export default class order extends base {
    */
   static page () {
     const url = `${this.baseUrl}/orders`;
-    return new Page(url, this._processOrderListItem.bind(this));
+    return new Page(url,
+      // this._processOrderListItem.bind(this)
+    );
   }
 
   /**
@@ -545,9 +547,9 @@ export default class order extends base {
    * 处理订单商品信息
    */
   static _processOrderGoods (goods) {
-    goods.forEach(item => {
-      item.imageUrl += '/small';
-    });
+    // goods.forEach(item => {
+    //   item.imageUrl += '/small';
+    // });
     if (goods == null || goods.length < 1) {
       return;
     }
