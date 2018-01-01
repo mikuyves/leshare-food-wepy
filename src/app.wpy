@@ -10,6 +10,14 @@ import WxUtils from './utils/WxUtils';
 import 'wepy-async-function';
 import { setStore } from 'wepy-redux'
 import configStore from './store'
+import AV from './libs/av-weapp-min.js'
+import {appId, appKey} from './config/secret'
+
+// LeanCloud 应用的 ID 和 Key
+AV.init({
+  appId: appId,
+  appKey: appKey
+});
 
 const store = configStore();
 setStore(store);
@@ -20,12 +28,12 @@ export default class extends wepy.app {
     // 注册中间件
     this.use('requestfix');
     this.use('promisify');
-//    this.intercept('request', {
-//      config (p) {
-//        p.header = this.createAuthHeader();
-//        return p;
-//      }
-//    });
+    this.intercept('request', {
+      config (p) {
+        p.header = this.createAuthHeader();
+        return p;
+      }
+    });
 //    this.intercept('uploadFile', {
 //      config (p) {
 //        p.header = this.createAuthHeader();
@@ -39,21 +47,27 @@ export default class extends wepy.app {
   /**
    * 构造权限头部
    */
-//  createAuthHeader () {
+  createAuthHeader () {
 //    const loginCode = wepy.$instance.globalData.auth.login_code;
-//    const header = {};
-//    if (loginCode) {
+    const sessionToken = wepy.$instance.globalData.auth.sessionToken;
+    const header = {};
+    if (sessionToken) {
 //      header['login_code'] = loginCode;
-//    }
-//    return header;
-//  }
-  onLaunch(param) {
+      header['sessionToken'] = sessionToken
+    }
+    return header;
+  }
+
+  async onLaunch(param) {
     // 校验SDK
     WxUtils.checkSDK();
     // 同步开放平台EXT数据
     const ext = wepy.getExtConfigSync();
     Object.assign(wepy.$instance.globalData, ext);
     console.info(ext);
+    // Leancloud 一键登录。
+    let user = await AV.User.loginWithWeapp()
+    wepy.$instance.globalData.auth['sessionToken'] = user.getSessionToken();
     // 同步权限数据
     this.syncStoreConfig('login_code');
     this.syncStoreConfig('third_session');
@@ -112,6 +126,7 @@ export default class extends wepy.app {
   globalData = {
     auth: {
     },
+    user: {},
     scene: '',
     shopType: 1,
     app_code: null,
@@ -119,8 +134,8 @@ export default class extends wepy.app {
     // baseUrl: 'https://api.leshare.shop/v2/customer'
     // baseUrl: 'http://192.168.31.124:9999/v2/customer',
 //    baseUrl: 'http://106.14.195.68:9999/v2/customer',
-//    baseUrl: 'http://localhost:3000/api/v1.0'
     baseUrl: 'http://localhost:3000/api/v1.1'
+//    baseUrl: 'http://huayejian.leanapp.cn/api/v1.1'
   }
 }
 </script>
