@@ -72,7 +72,7 @@ export default class extends wepy.app {
     if (!sessionToken) {
       // TODO: 获取 user 未能以同步进行。
       let user = await AV.User.loginWithWeapp()
-      wepy.$instance.globalData.auth = user.getSessionToken();
+      wepy.$instance.globalData.auth['sessionToken'] = user.getSessionToken();
     }
     // 同步权限数据
     this.syncStoreConfig('login_code');
