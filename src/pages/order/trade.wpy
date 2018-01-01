@@ -108,6 +108,14 @@
       </view>
     </view>
 
+    <!-- 选择销售人员-->
+    <view class="remark-box weui-cells weui-cells_after-title weui-cells-merge-top">
+      <view class="weui-cell weui-cell_access" @tap="salesman">
+        <view class="weui-cell__bd">选择店员</view>
+        <text class="weui-cell__ft weui-cell__ft_in-access">{{trade.salesman.nickName}} </text>
+      </view>
+    </view>
+
     <!--操作底栏-->
     <view class="tarde-action-bar row-end">
       <view>
@@ -252,6 +260,20 @@
       async arriveTime() {
         const {text} = await Tips.action('立即出货', '今天到店', '明天到店', '后天到店');
         this.trade.arriveTime = text;
+        this.$apply();
+      },
+      /**
+       * 选择销售人员
+       */
+      async salesman() {
+        let staffs = await order.getStaffs()
+        let names = staffs.map(item => {
+          return item.nickName
+        })
+        const {text} = await Tips.action(...names);
+        this.trade.salesman = staffs.find(item => {
+          return item.nickName === text
+        });
         this.$apply();
       },
       /**

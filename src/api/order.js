@@ -59,6 +59,13 @@ export default class order extends base {
       // this._processOrderListItem.bind(this)
     );
   }
+  /**
+   * 获取销售人员
+   */
+  static getStaffs() {
+    const url = `${this.baseUrl}/orders/staffs`;
+    return this.get(url)
+  }
 
   /**
    * 获取订单详情
