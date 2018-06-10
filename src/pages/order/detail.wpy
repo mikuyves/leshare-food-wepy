@@ -3,7 +3,7 @@
   <view class="container" wx:if="{{init}}">
     <!--状态栏-->
     <view class="order-status-bar row">
-      <image class="icon-lg" src="/images/icons/status-{{order.status}}.png" wx:if="{{order.status}}" />
+      <icon class="status-{{order.status}} large"/>
       <view class="status-box column">
         <text class="xxl">{{order.statusText}}</text>
         <!-- 订单文本描述/需要抽取到Service中 -->
@@ -15,20 +15,21 @@
     <block wx:if="{{order.isExpress && order.orderExpress.telPhone}}">
       <view class="order-trace-bar row-between" >
         <view class="row">
-          <image class="icon" src="/images/icons/sender.png" />
+          <icon class="sender"/>
           <text class="ml20">{{order.orderExpress.note}}（{{order.orderExpress.telPhone}}）</text>
         </view>
         <view  class="row" @tap="sender">
-          <image class="icon" src="/images/icons/call.png"  />
+          <icon class="call"/>
           <text class="ml10 primary">电话联系</text>
         </view>
       </view>
     </block>
+
     <!--地址展现-->
-    <block wx:if="{{order.orderType == '20'}}">
+    <block wx:if="{{order.orderType == '20' || order.orderType == '10'}}">
       <Address :address.sync="address" />
     </block>
-    <block wx:else>
+    <block wx:if="{{order.orderType == '30' || order.orderType == '33'}}">
       <InShopStatus :order.sync="order" />
     </block>
 
@@ -36,12 +37,12 @@
     <OrderItem :order.sync="order" action="0"></OrderItem>
 
     <!--订单详情-->
-    <view class="weui-cells weui-cells_after-title weui-cells-merge-top">
+    <view class="weui-cells weui-cells-show mt10">
       <view class="weui-cell">
         <view class="weui-cell__bd">支付方式</view>
         <view class="weui-cell__ft">{{order.paymentText}}</view>
       </view>
-      <view class="weui-cell" wx:if="{{order.orderType == '20'}}">
+      <view class="weui-cell" wx:if="{{order.orderType == '20' || order.orderType == '10'}}">
         <view class="weui-cell__bd">配送方式</view>
         <view class="weui-cell__ft">{{order.deliveryText}}</view>
       </view>
@@ -71,7 +72,7 @@
       </view>
       <view class="price-box row-between" wx:if="{{order.reduceFee > 0}}">
         <view class="row">
-          <image class="icon" src="/images/icons/reduce.png"></image>
+          <icon class="reduce" style="color: #d81e06;"/>
           <text>优惠满减</text>
         </view>
         <text class="major">-￥{{order.reduceFee}}</text>
@@ -91,7 +92,8 @@
     <!--操作栏-->
     <view class="order-action-bar row-end" wx:if="{{action != 0 && order.actions.length > 0}}">
       <block wx:for="{{order.actions}}" wx:for-item="action" wx:key="index">
-        <view class="zan-btn zan-btn--small {{action.primary ? 'zan-btn--primary' : ''}}" @tap="action({{action.func}}, {{order}})">{{action.name}}</view>
+        <button wx:if="{{action.primary}}" class="weui-btn mini-btn mr10" size="mini"  type="primary" @tap="action({{action.func}}, {{order}})">{{action.name}}</button>
+        <button wx:else class="weui-btn mini-btn mr10" size="mini"  @tap="action({{action.func}}, {{order}})">{{action.name}}</button>
       </block>
     </view>
   </view>
@@ -104,9 +106,9 @@
   import order from '../../api/order';
   import Tips from '../../utils/Tips';
   import Event from '../../utils/Event';
-  import Address from '../../components/address/display';
+  import Address from '../../components/address/display_item';
   import Route from '../../utils/WxUtils';
-  import OrderItem from '../../components/order/customer_item';
+  import OrderItem from '../../components/order/order_item';
   import InShopStatus from '../../components/order/inshop_status';
   import Loading from '../../components/common/loading';
   export default class OrderDetail extends wepy.page {
@@ -197,7 +199,7 @@
      * 订单收货
      */
     async receive({orderId}) {
-      await Tips.confirm('是否已收到外卖？');
+      await Tips.confirm('确认收货？');
       try {
         Tips.loading();
         await order.confirmOrder(orderId);
@@ -230,7 +232,7 @@
       const refundUuid = refundOrder.curRefund.refundUuid;
       await Tips.confirm('您确认取消退款申请吗？');
       Tips.loading();
-      await order.cancelRefund(orderId, refundUuid);
+      await order.cancelRefundOrder(orderId, refundUuid);
       await Tips.success('取消成功');
       Event.emit(Event.ORDER_LIST_UPDATE);
       Route.backOrRedirect('/pages/customer/index');
@@ -291,8 +293,8 @@
   //状态栏
   .order-status-bar{
     background-color: #FFF;
-    height: 70rpx;
-    padding: 40rpx 30rpx;
+    min-height: 70rpx;
+    padding: 20rpx 30rpx;
     border-bottom: $border;
 
     .status-box{
@@ -351,7 +353,6 @@
     width: 750rpx;
     bottom: 0;
     border-top: $border;
-    height: 90rpx;
     padding-right: 10rpx;
   }
 

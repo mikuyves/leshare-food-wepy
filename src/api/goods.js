@@ -6,13 +6,20 @@ import Page from '../utils/Page';
  */
 export default class goods extends base {
   /**
-   * 返回分页对象
+   * 获取推荐
    */
-  static page (isRecommend = false, discount) {
-    let url = `${this.baseUrl}/goods`;
-    if (isRecommend) {
-      url += '/recommend';
-    }
+  static recommend () {
+    let url = `${this.baseUrl}/goods/recommend`;
+    return new Page(url, item => {
+      this._processGoodsData(item);
+    });
+  }
+
+  /**
+   * 新的分页方法
+   */
+  static list (discount) {
+    let url = `${this.baseUrl}/goods/list`;
     return new Page(url, item => {
       this._processGoodsDiscount(item, discount);
       this._processGoodsData(item);
@@ -38,20 +45,18 @@ export default class goods extends base {
   /**
    * 查询商品详情
    */
-  static getInfo (goodsId) {
+  static getInfo (goodsId, discount) {
     const url = `${this.baseUrl}/goods/${goodsId}`;
-    return this.get(url, {}).then(data => this._processGoodsDetail(data));
+    return this.get(url, {}).then(data => {
+      this._processGoodsDiscount(data, discount);
+      return this._processGoodsDetail(data)
+    });
   }
 
   /** ********************* 数据处理方法 ***********************/
 
   static _createGoodsCategories (data) {
     const list = [];
-    list.push({
-      id: '-1',
-      title: '推荐'
-    });
-
     if (data != null) {
       list.push(...data.map(item => {
         return {
@@ -60,9 +65,10 @@ export default class goods extends base {
         };
       }));
     }
+    const selectedId = list.length > 0 ? list[0].id : null;
     return {
-      list: list,
-      selectedId: '-1',
+      list,
+      selectedId,
       scroll: false
     };
   }
@@ -167,7 +173,7 @@ export default class goods extends base {
       // priceLable = `${detail.minPrice}~${detail.maxPrice}`;
       priceLable = detail.minPrice;
     }
-    detail.priceLable = isNaN(detail.priceLable) ? priceLable : priceLable.toFixed.toFixed(2);
+    detail.priceLable = isNaN(detail.priceLable) ? priceLable : priceLable.toFixed(2);
   }
 
   /**
@@ -240,9 +246,9 @@ export default class goods extends base {
     const images = item.images;
     // 图片处理
     if (images == null || images.length < 1) {
-      item.imageUrl = '/images/goods/broken.png';
+      item.imageUrl = '/images/icons/broken.png';
     } else if (images[0].url == null) {
-      item.imageUrl = '/images/goods/broken.png';
+      item.imageUrl = '/images/icons/broken.png';
     } else {
       item.imageUrl = images[0].url + '/medium';
     }

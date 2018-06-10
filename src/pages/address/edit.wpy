@@ -3,7 +3,6 @@
   <Tips />
   <view class="container" wx:if="{{init}}">
     <form @submit="confirm">
-      <view class="mt20"></view>
       <view class="weui-cells-form">
         <!--联系人-->
         <view class="weui-cell weui-cell_input">
@@ -51,7 +50,7 @@
         <!--送餐地址-->
         <view class="weui-cell weui-cells_after-title" @tap="location">
           <view class="weui-cell__hd">
-            <view class="weui-label">送餐地址</view>
+            <view class="weui-label">收货地址</view>
           </view>
           <view class="weui-cell__bd">
             <text class="muted" wx:if="{{!location}}">小区/写字楼/学校等（请选择）</text>
@@ -72,14 +71,12 @@
       </view>
 
       <!--操作栏-->
-      <ActionPanel submitText="确定"/>
+      <view class="btn-panel">
+        <button class="weui-btn" type="primary" form-type="submit">确定</button>
+      </view>
     </form>
    </view>
 </template>
-
-<style lang="scss">
-  @import "../../styles/variable";
-</style>
 
 <script>
   import wepy from 'wepy';
@@ -87,7 +84,6 @@
   import input from '../../mixins/input';
   import Event from '../../utils/Event';
   import FormTips from '../../components/weui/tips';
-  import ActionPanel from '../../components/common/action_panel';
   import address from '../../api/address';
   import Tips from '../../utils/Tips';
   import Loading from '../../components/common/loading';
@@ -202,7 +198,6 @@
     }
     components = {
       Tips: FormTips,
-      ActionPanel: ActionPanel,
       Loading: Loading
     };
     mixins = [base, input];
@@ -211,3 +206,10 @@
     };
   }
 </script>
+
+<style lang="scss">
+  @import "../../styles/variable";
+  .container {
+    background-color: white;
+  }
+</style>

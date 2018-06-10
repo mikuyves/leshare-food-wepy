@@ -1,7 +1,7 @@
 <template>
-  <view class="coupon-item-container" data-coupon-id="{{coupon.id}}">
+  <view class="coupon-item-container row" data-coupon-id="{{coupon.id}}">
     <!--左侧区域-->
-    <view class="coupon-main-container">
+    <view class="coupon-main-container column-center">
       <view class="coupon-value-container">
         <text class="coupon-value-unit">￥</text>
         <text class="coupon-value-text">{{coupon.price}}</text>
@@ -15,30 +15,40 @@
         <view class="label primary small">现金</view>
         <text class="coupon-title-text">{{coupon.name}}</text>
       </view>
-      <view class="coupon-time-pick-container row-between">
-        <text class="coupon-time-text">{{coupon.beginTime}}-{{coupon.dueTime}}</text>
-        <view class="coupon-item-pick" wx:if="{{!own}}"  @tap="pick({{coupon.id}})">点击领取</view>
+      <view class="coupon-time-pick-container column">
+        <text class="coupon-time-text">开始时间：{{coupon.beginTime}}</text>
+        <text class="coupon-time-text">截止时间：{{coupon.beginTime}}</text>
       </view>
     </view>
 
-    <!-- 修饰图片 -->
-    <image class="coupon-picked-icon" wx:if="{{own}}"  src="/images/icons/picked.png" />
+    <view class="coupon-pick-button column-center" @tap="pick({{coupon}})">
+      <text>点击</text>
+      <text>领取</text>
+    </view>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
-  export default class OrderGoods extends wepy.component {
+  import wepy from 'wepy';
+  import Tips from '../../utils/Tips';
+  import coupon from '../../api/coupon';
+  import store from '../../store/utils';
+  export default class CouponPickItem extends wepy.component {
     props = {
-      coupon: {},
-      own: {
-        default: false
-      }
+      coupon: {}
     };
     data = {};
     methods = {
-      pick(couponId) {
-        this.$emit('pick', couponId);
+      async pick(item) {
+        try {
+          Tips.loading();
+          await coupon.pick(item.id);
+          await Tips.success('领取成功');
+          await store.refresh('coupon');
+          this.$root.$apply();
+        } catch (e) {
+          await Tips.alert('已达领取上限');
+        }
       }
     };
     events = {};
@@ -53,22 +63,15 @@
   /*父容器*/
   .coupon-item-container{
     position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
     margin:20rpx 20rpx 0 20rpx;
     background-color: #FFF;
     height: 200rpx;
-    border: 1px solid #E7E7E7;
+    border: $border;
     border-radius: 5px;
     overflow: hidden;
   }
   /*左侧容器*/
   .coupon-main-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 255rpx;
     height: 100%;
     background: linear-gradient(to right, #2F80ED, #1296db);
@@ -137,13 +140,21 @@
     height: 26rpx;
   }
 
-
+  .coupon-pick-button{
+    width: 130rpx;
+    height: 160rpx;
+    border-left: 1px dashed $color-muted;
+    text{
+      font-size: $text-xxl;
+      color: $color-primary;
+    }
+  }
 
   /*领取*/
   .coupon-item-pick{
-    border: 1px solid #1296db;
+    border: 1px solid $color-primary;
     border-radius: 10px;
-    color: #1296db;
+    color: $color-primary;
     font-size: 26rpx;
     display: inline-block;
     padding: 10rpx;

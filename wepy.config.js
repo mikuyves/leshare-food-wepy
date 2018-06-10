@@ -1,6 +1,7 @@
 const prod = process.env.NODE_ENV === 'production';
 module.exports = {
   wpyExt: '.wpy',
+  cliLogs: true,
   build: {
     web: {
     }
@@ -8,10 +9,10 @@ module.exports = {
   eslint: true,
   compilers: {
     sass: {
-      outputStyle: 'expanded'
+      outputStyle: 'compact'
     },
     babel: {
-      sourceMap: true,
+      sourceMap: false,
       presets: [
         'es2015',
         'stage-1'
@@ -40,6 +41,12 @@ if (prod) {
 
   // 压缩js
   module.exports.plugins = {
+    autoprefixer: {
+      filter: /\.(wxss|css)$/,
+      config: {
+        browsers: ['last 11 iOS versions']
+      }
+    },
     uglifyjs: {
       filter: /\.js$/,
       config: {
@@ -55,6 +62,9 @@ if (prod) {
           quality: 80
         }
       }
+    },
+    filemin: {
+      filter: /\.(wxml)$/
     }
   }
 }

@@ -13,11 +13,9 @@
       <text style="width: 200px; height: 200px;" class="muted lg column-center" wx:if="{{coupon.supportType ==1}}">暂不支持线下店铺消费</text>
     </view>
 
-    <view class="zan-panel" wx:if="{{!success}}">
-      <view class="zan-btns">
-        <button class="zan-btn zan-btn--fill" @tap="check" wx:if="{{coupon.isSelfUse}}">自助核销</button>
-        <button class="zan-btn" @tap="delete">删除优惠券</button>
-      </view>
+    <view class="btn-panel" wx:if="{{!success}}">
+      <button class="weui-btn" type="primary"  @tap="check" wx:if="{{coupon.isSelfUse}}">自助核销</button>
+      <button class="weui-btn" type="warn" plain @tap="delete">删除优惠券</button>
     </view>
   </view>
 
@@ -29,7 +27,7 @@
   import base from '../../mixins/base';
   import input from '../../mixins/input';
   import coupon from '../../api/coupon';
-  import CouponItem from '../../components/coupons/item';
+  import CouponItem from '../../components/coupons/display_item';
   import Qrcode from '../../components/wux/qrcode/qrcode';
   import Tips from '../../utils/Tips';
   import Event from '../../utils/Event';
@@ -54,7 +52,7 @@
           this.success = true;
           clearInterval(interval);
           Event.emit(Event.COUPON_LIST_UPDATE);
-          await store.reflesh('ownCoupons', 'pickCoupons');
+          await store.refresh('coupon');
           await Tips.success('已核销', 1000);
           this.$apply();
         }
@@ -78,7 +76,7 @@
           await Tips.success('操作成功', 1000);
           this.$apply();
           Event.emit(Event.COUPON_LIST_UPDATE);
-          await store.reflesh('ownCoupons', 'pickCoupons');
+          await store.refresh('coupon');
         } catch (e) {
           console.warn(e);
           this.tips('核销失败:' + e.message);
@@ -92,7 +90,7 @@
         clearInterval(interval);
         await Tips.success('操作成功');
         Event.emit(Event.COUPON_LIST_UPDATE);
-        await store.reflesh('ownCoupons', 'pickCoupons');
+        await store.refresh('coupon');
         wepy.navigateBack();
       }
     };

@@ -1,7 +1,11 @@
 import base from './base'
 import wepy from 'wepy';
 import store from '../store/utils';
+import WxUtils from '../utils/WxUtils';
 
+/**
+ * 权限服务类
+ */
 export default class auth extends base {
   /**
    * 一键登录
@@ -31,12 +35,13 @@ export default class auth extends base {
         store.save('user', this.getConfig('user'));
         return true;
       }
+      console.info('[auth] user check fail');
       // 重新登录
       await this.doLogin();
       // 获取用户信息
       const rawUser = userInfo != null ? userInfo : await wepy.getUserInfo();
       // 检查是否通过
-      await this.checkUserInfo(rawUser);
+      // await this.checkUserInfo(rawUser);
       // 解密信息
       const {user} = await this.decodeUserInfo(rawUser);
       // 保存登录信息
@@ -44,13 +49,13 @@ export default class auth extends base {
       store.save('user', user);
       return true;
     } catch (error) {
-      console.error('授权失败', error);
+      console.error('[auth] 授权失败', error);
       if (param.block) {
         const url = `/pages/home/login?redirect=${param.redirect}`;
         if (param.redirect) {
-          wepy.redirectTo({url});
+          WxUtils.backOrRedirect(url);
         } else {
-          wepy.navigateTo({url});
+          WxUtils.backOrNavigate(url);
         }
       }
       return false;
@@ -89,7 +94,6 @@ export default class auth extends base {
    * 执行登录操作
    */
   static async doLogin() {
-    await this.removeConfig('login_code');
     const {code} = await wepy.login();
     const {third_session, login_code} = await this.session(code);
     await this.setConfig('login_code', login_code);
@@ -101,7 +105,7 @@ export default class auth extends base {
    * 获取会话
    */
   static async session(jsCode) {
-    const shopCode = wepy.$instance.globalData.app_code;
+    const shopCode = wepy.$instance.globalData.appCode;
     const url = `${this.baseUrl}/auth/session?code=${jsCode}&app_code=${shopCode}`;
     return await this.get(url);
   }
@@ -119,7 +123,7 @@ export default class auth extends base {
    * 获取店铺标识符
    */
   static getShopCode() {
-    return wepy.$instance.globalData.app_code;
+    return wepy.$instance.globalData.appCode;
   }
 
   /**
@@ -149,6 +153,7 @@ export default class auth extends base {
    * 删除权限值
    */
   static async removeConfig(key) {
+    console.info(`[auth] clear auth config [${key}]`);
     wepy.$instance.globalData.auth[key] = null;
     await wepy.removeStorage({key: key});
   }

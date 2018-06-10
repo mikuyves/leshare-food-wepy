@@ -6,10 +6,8 @@
       <CouponItem :coupon.sync="item" @select.user="select"/>
     </repeat>
 
-    <view class="zan-panel">
-      <view class="zan-btns">
-        <button class="zan-btn" @tap="select({{null}})">不使用优惠券</button>
-      </view>
+    <view class="btn-panel">
+      <button class="weui-btn" type="primary" plain @tap="select({{null}})">不使用优惠券</button>
     </view>
 
   </view>
@@ -22,7 +20,7 @@
   import wepy from 'wepy';
   import base from '../../mixins/base';
   import Placeholder from '../../components/common/placeholder';
-  import CouponItem from '../../components/coupons/item';
+  import CouponItem from '../../components/coupons/display_item';
   import Event from '../../utils/Event';
 
   export default class CouponUse extends wepy.page {

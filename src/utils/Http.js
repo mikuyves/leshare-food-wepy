@@ -1,5 +1,4 @@
 import wepy from 'wepy';
-import Tips from './Tips';
 
 // HTTP工具类
 export default class http {
@@ -12,6 +11,7 @@ export default class http {
     if (loading) {
       // Tips.loading();
     }
+    console.info(`[http]request url=${url}`)
     const res = await wepy.request(param);
     if (this.isSuccess(res)) {
       return res.data.data;
